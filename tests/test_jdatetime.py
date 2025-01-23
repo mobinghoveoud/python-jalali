@@ -763,6 +763,71 @@ class TestJdatetimeComparison(TestCase):
         dt2 = "not a datetime object"
         self.assertFalse(dt1 == dt2)
 
+    # __ne__
+    def test_ne_different_dates(self):
+        dt1 = jdatetime.datetime(1400, 1, 1, 0, 0, 0)
+        dt2 = jdatetime.datetime(1400, 1, 2, 0, 0, 0)
+        self.assertTrue(dt1 != dt2)
+
+    def test_neq_different_times(self):
+        dt1 = jdatetime.datetime(1400, 1, 1, 12, 0, 0)
+        dt2 = jdatetime.datetime(1400, 1, 1, 13, 0, 0)
+        self.assertTrue(dt1 != dt2)
+
+    def test_neq_different_timezones(self):
+        gmt = GMTTime()
+        teh = TehranTime()
+
+        dt1 = jdatetime.datetime(1400, 1, 1, 12, 0, 0, tzinfo=teh)
+        dt2 = jdatetime.datetime(1400, 1, 1, 12, 0, 0, tzinfo=gmt)
+        self.assertTrue(dt1 != dt2)
+
+    def test_neq_same_datetime(self):
+        dt1 = jdatetime.datetime(1400, 1, 1, 12, 0, 0)
+        dt2 = jdatetime.datetime(1400, 1, 1, 12, 0, 0)
+        self.assertFalse(dt1 != dt2)
+
+    def test_neq_different_types(self):
+        dt1 = jdatetime.datetime(1400, 1, 1, 12, 0, 0)
+        self.assertTrue(dt1 != "1400-01-01 12:00:00")
+
+    def test_neq_with_none(self):
+        dt1 = jdatetime.datetime(1400, 1, 1, 12, 0, 0)
+        self.assertTrue(dt1.__ne__(None))
+
+    def test_neq_different_datetime_types(self):
+        dt1 = jdatetime.datetime(1400, 1, 1, 12, 0, 0)
+        dt2 = dt1.togregorian()
+        self.assertFalse(dt1 != dt2)
+
+        # different hour
+        dt2 = dt1.togregorian() + datetime.timedelta(hours=1)
+        self.assertTrue(dt1 != dt2)
+        dt2 = dt1.togregorian() - datetime.timedelta(hours=1)
+        self.assertTrue(dt1 != dt2)
+
+        # different day
+        dt2 = dt1.togregorian() + datetime.timedelta(days=1)
+        self.assertTrue(dt1 != dt2)
+        dt2 = dt1.togregorian() - datetime.timedelta(days=1)
+        self.assertTrue(dt1 != dt2)
+
+        # different month
+        dt2 = dt1.togregorian() + datetime.timedelta(days=31)
+        self.assertTrue(dt1 != dt2)
+        dt2 = dt1.togregorian() - datetime.timedelta(days=31)
+        self.assertTrue(dt1 != dt2)
+
+        # different year
+        dt2 = dt1.togregorian() + datetime.timedelta(days=370)
+        self.assertTrue(dt1 != dt2)
+        dt2 = dt1.togregorian() - datetime.timedelta(days=370)
+        self.assertTrue(dt1 != dt2)
+
+    def test_neq_not_implemented(self):
+        dt1 = jdatetime.datetime(1400, 1, 1, 12, 0, 0)
+        self.assertEqual(dt1.__ne__("not datetime object"), NotImplemented)
+
     # __ge__
     def test_ge_with_same_datetime(self):
         dt1 = jdatetime.datetime(1402, 7, 8, 12, 0, 0)
