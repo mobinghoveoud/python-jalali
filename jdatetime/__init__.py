@@ -1055,6 +1055,16 @@ class datetime(date):
 
         return self.togregorian() == other_datetime
 
+    def __ne__(self, other_datetime):
+        """x.__ne__(y) <==> x!=y"""
+        if other_datetime is None:
+            return True
+
+        if not (isinstance(other_datetime, datetime) or isinstance(other_datetime, py_datetime.datetime)):
+            return NotImplemented
+
+        return not self.__eq__(other_datetime)
+
     def __ge__(self, other_datetime):
         """x.__ge__(y) <==> x>=y"""
         if isinstance(other_datetime, datetime):
