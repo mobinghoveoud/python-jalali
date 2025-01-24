@@ -1,5 +1,9 @@
 # Changelog
 
+### Fixed
+
+* Fix __ne__ for different datetime types #164
+
 ## [5.1.0] - 2025-01-13
 
 ### Fixed

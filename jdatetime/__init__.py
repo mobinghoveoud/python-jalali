@@ -481,17 +481,6 @@ class date:
 
         return not self.__ge__(other_date)
 
-    def __ne__(self, other_date):
-        """x.__ne__(y) <==> x!=y"""
-        if other_date is None:
-            return True
-        if isinstance(other_date, py_datetime.date):
-            return self.__ne__(date.fromgregorian(date=other_date))
-        if not isinstance(other_date, date):
-            return NotImplemented
-
-        return not self.__eq__(other_date)
-
     def __hash__(self):
         """x.__hash__() <==> hash(x)"""
         gd = self.togregorian()
